@@ -388,6 +388,21 @@ PrefabInstance:
       propertyPath: m_NormalizedViewPortRect.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918267, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918267, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918267, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
         type: 3}
       propertyPath: m_UpscaleRT
@@ -397,6 +412,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AssetsPPU
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_PixelSnapping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_CropFrameX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_CropFrameY
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_StretchFill
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d2dddde707b6c143a5b1bd5890d4a23, type: 3}
