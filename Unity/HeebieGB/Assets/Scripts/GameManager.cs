@@ -13,18 +13,25 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        string currentScene = ScreenChanger.GetActiveScene().name;
+
         if (Input.anyKeyDown)
         {
             if (Input.GetMouseButtonDown(0)|| Input.GetMouseButtonDown(1)|| Input.GetMouseButtonDown(2))
                 return; //Do Nothing
-            if (ScreenChanger.GetActiveScene().name == ScreenChanger.IntroScene)
+            if (currentScene == ScreenChanger.IntroScene)
             {
                 ScreenChanger.LoadNewScene(ScreenChanger.TitleScene);
             }
-            else if (ScreenChanger.GetActiveScene().name == ScreenChanger.TitleScene)
+            else if (currentScene == ScreenChanger.TitleScene)
             {
                 ScreenChanger.LoadFight();
             }
+        }
+
+        if (Input.GetKey("escape") && currentScene == ScreenChanger.TitleScene)
+        {
+            Application.Quit();
         }
     }
 }

@@ -65,7 +65,6 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\introAniimationBehaviour.cs" />
     <Compile Include="Assets\Scripts\ScreenChanger.cs" />
-    <Compile Include="Assets\Scripts\Stop.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/drama/HeebieGB/Unity/HeebieGB/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
