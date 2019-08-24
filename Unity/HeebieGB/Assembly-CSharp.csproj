@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\introAniimationBehaviour.cs" />
     <Compile Include="Assets\Scripts\ScreenChanger.cs" />
     <Reference Include="Unity.Timeline.Editor">

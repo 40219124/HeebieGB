@@ -15,10 +15,8 @@ public class GameManager : MonoBehaviour
     {
         string currentScene = ScreenChanger.GetActiveScene().name;
 
-        if (Input.anyKeyDown)
+        if (InputManager.GetAnyButtonDown())
         {
-            if (Input.GetMouseButtonDown(0)|| Input.GetMouseButtonDown(1)|| Input.GetMouseButtonDown(2))
-                return; //Do Nothing
             if (currentScene == ScreenChanger.IntroScene)
             {
                 ScreenChanger.LoadNewScene(ScreenChanger.TitleScene);
@@ -29,9 +27,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKey("escape") && currentScene == ScreenChanger.TitleScene)
+        if (InputManager.PowerOff())
         {
-            Application.Quit();
+
         }
     }
 }
