@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    GameObject Poweroff;
+
+    private void Awake()
     {
-        
+        Poweroff = GameObject.FindGameObjectWithTag("powerScreen");
+        DontDestroyOnLoad(Poweroff);
+        Poweroff.SetActive(false);
     }
 
     // Update is called once per frame
@@ -29,7 +33,7 @@ public class GameManager : MonoBehaviour
 
         if (InputManager.PowerOff())
         {
-
+            Poweroff.SetActive(true);
         }
     }
 }
