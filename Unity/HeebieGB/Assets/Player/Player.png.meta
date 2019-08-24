@@ -41,6 +41,15 @@ TextureImporter:
   - first:
       213: 3857395914827866467
     second: Player_die_1
+  - first:
+      213: -5434376271314479980
+    second: Player_dodge_0
+  - first:
+      213: 251623392735547943
+    second: Player_Dodge_1
+  - first:
+      213: 640683503181485478
+    second: Player_Bob
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -343,7 +352,7 @@ TextureImporter:
         width: 86
         height: 86
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -364,7 +373,7 @@ TextureImporter:
         width: 86
         height: 86
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -372,6 +381,69 @@ TextureImporter:
       bones: []
       spriteID: 6e988900d31c4d04ba94fb5009bc7791
       internalID: 3857395914827866467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_dodge_0
+      rect:
+        serializedVersion: 2
+        x: 1032
+        y: 0
+        width: 86
+        height: 86
+      alignment: 9
+      pivot: {x: 0.5813953, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a985e364993f80049b6a017668bfc825
+      internalID: -5434376271314479980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Dodge_1
+      rect:
+        serializedVersion: 2
+        x: 1118
+        y: 0
+        width: 86
+        height: 86
+      alignment: 9
+      pivot: {x: 0.5813953, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 095328ae571a67d4bbf4d2556ee351bb
+      internalID: 251623392735547943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Bob
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 0
+        width: 86
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50231a4dd572d5a4496778a7b9706b0c
+      internalID: 640683503181485478
       vertices: []
       indices: 
       edges: []

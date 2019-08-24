@@ -62,6 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\introAniimationBehaviour.cs" />
+    <Compile Include="Assets\Scripts\ScreenChanger.cs" />
     <Compile Include="Assets\Scripts\CombatCoordinator.cs" />
     <Compile Include="Assets\Scripts\CombatDecoder.cs" />
     <Compile Include="Assets\Scripts\CombatNote.cs" />
