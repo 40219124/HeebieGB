@@ -70,9 +70,10 @@
     <Compile Include="Assets\Scripts\CombatCoordinator.cs" />
     <Compile Include="Assets\Scripts\CombatDecoder.cs" />
     <Compile Include="Assets\Scripts\CombatNote.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\introAniimationBehaviour.cs" />
     <Compile Include="Assets\Scripts\Manager.cs" />
-    <Compile Include="Assets\Scripts\Stop.cs" />
+    <Compile Include="Assets\Scripts\ScreenChanger.cs" />
     <Compile Include="Assets\Scripts\Timer.cs" />
     <None Include="Assets\Resources\CombatTiming\Reference.txt" />
     <None Include="Assets\Resources\CombatTiming\Slime.txt" />
