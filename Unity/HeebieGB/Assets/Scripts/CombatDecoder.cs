@@ -10,7 +10,7 @@ public class CombatDecoder : MonoBehaviour
     private static CombatDecoder instance = null;
     public static CombatDecoder Instance { get { return instance; } }
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -166,15 +166,15 @@ public class CombatDecoder : MonoBehaviour
 
     private EnumAttackType MakeRandomBasicAttack()
     {
-        int val = Random.Range(0, 3);
+        int val = Random.Range(0, 2);
         switch (val)
         {
             case 0:
-                return EnumAttackType.AtkEither;
-            case 1:
                 return EnumAttackType.AtkA;
-            case 2:
+            case 1:
                 return EnumAttackType.AtkB;
+            case 2:
+                return EnumAttackType.AtkEither;
             default:
                 return EnumAttackType.AtkEither;
         }
@@ -182,7 +182,7 @@ public class CombatDecoder : MonoBehaviour
 
     private EnumAttackType MakeRandomDefence()
     {
-        int val = Random.Range(0, 4);
+        int val = Random.Range(0, 2);
         switch (val)
         {
             case 0:

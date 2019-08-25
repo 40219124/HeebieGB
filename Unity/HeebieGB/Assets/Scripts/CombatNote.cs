@@ -16,46 +16,53 @@ public class CombatNote
     EnumAttackType aType = EnumAttackType.None;
     Timer timer;
     float playTime = -1;
+    float autoFailTime = -1;
     bool failed = false;
     bool locked = false;
+    float lockTime = -1;
 
     public CombatNote(EnumAttackType type, float timeTill)
     {
         aType = type;
         timer = new Timer(timeTill); // ~~~ remove once verified redundant
         playTime = timeTill;
+        autoFailTime = playTime + CombatDecoder.Instance.beatLength * 0.15f;
     }
 
-    public bool IsSatisfied(EnumAttackType input)
+    public bool IsSatisfied(EnumAttackType input, float time)
     {
-        if (aType == EnumAttackType.AtkEither)
+        if (Mathf.Abs(playTime - time) < CombatDecoder.Instance.beatLength * 0.15)
         {
-            if (input == EnumAttackType.AtkA || input == EnumAttackType.AtkB)
+            if (aType == EnumAttackType.AtkEither)
             {
-                locked = true;
-                return true;
+                if (input == EnumAttackType.AtkA || input == EnumAttackType.AtkB)
+                {
+                    failed = false;
+                }
+            }
+            else if (aType == input)
+            {
+                failed = false;
             }
         }
-        else if (aType == input)
+        else
         {
-            locked = true;
-            return true;
+            failed = true;
         }
         locked = true;
-        failed = true;
-        return false;
+        lockTime = time;
+
+        Debug.Log($"Satisfaction: {(!failed).ToString()}");
+        return !failed;
     }
 
     public void Reincarnate()
     {
         playTime += loopLength;
+        autoFailTime += loopLength;
+        lockTime = -1;
         locked = false;
         failed = false;
-    }
-
-    public void Lock()
-    {
-        failed = true;
     }
 
     public int Status
@@ -80,7 +87,20 @@ public class CombatNote
         }
     }
 
-    public bool IsLocked { get { return failed; } }
+    public void TimeOutCheck(float time)
+    {
+        if (time > autoFailTime && !locked)
+        {
+            failed = true;
+            locked = true;
+            lockTime = time;
+        }
+    }
+
     public EnumAttackType AtkType { get { return aType; } }
+    public bool Failed { get { return failed; } }
+    public bool IsLocked { get { return locked; } }
+    public float LockTime { get { return lockTime; } }
     public float PlayTime { get { return playTime; } }
+    public float AutoFailTime { get { return autoFailTime; } }
 }

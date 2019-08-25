@@ -10,6 +10,7 @@ public class ScreenChanger : MonoBehaviour
     public static string TitleScene = "Start";
     public static string FightScene = "Game";
     public static string FightHudScene = "HUD";
+    public static string EngineScene = "BeatEngine";
 
     private void Awake()
     {
@@ -50,6 +51,10 @@ public class ScreenChanger : MonoBehaviour
         if (!SceneManager.GetSceneByName(FightHudScene).isLoaded)
         {
             LoadNewScreens(FightHudScene);
+        }
+        if (!SceneManager.GetSceneByName(EngineScene).isLoaded)
+        {
+            LoadNewScreens(EngineScene);
         }
     }
 

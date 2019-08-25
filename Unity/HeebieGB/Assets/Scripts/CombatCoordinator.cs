@@ -15,7 +15,13 @@ public class CombatCoordinator : MonoBehaviour
     private CombatCoordinator() { }
     private static CombatCoordinator instance = null;
     public static CombatCoordinator Instance { get { return instance; } }
-
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
     #endregion
 
     public List<CombatNote> noteQueue = new List<CombatNote>();
@@ -25,24 +31,26 @@ public class CombatCoordinator : MonoBehaviour
         return noteQueue[(queueHeadIdx + idx) % noteQueue.Count];
     }
 
-    public List<RectTransform> beatSprites = new List<RectTransform>();
-    public RectTransform beatStart;
-    public RectTransform beatEnd;
+    public delegate void CombatInformation(EnumAttackType action, bool successful);
+    public CombatInformation CombatInfoCall;
 
-    private float goalHeight = -1;
-    private float startHeight = -1;
+    public delegate void BeatTrackNote(int beatIdx, CombatNote note);
+    public BeatTrackNote BeatTrackNoteCall;
+
+    public delegate void AdvanceIndex();
+    public AdvanceIndex AdvanceIndexCall;
+
+    public delegate void NoMoreBeats();
+    public NoMoreBeats NoMoreBeatsCall;
 
     private float songProgress = -1;
+    public float SongProgress { get { return songProgress; } }
+    public float noteTrackPeriod = -1;
+    private EnumCombatState combatState = EnumCombatState.Ongoing;
 
     void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-
-        startHeight = beatStart.position.y;
-        goalHeight = beatEnd.position.y;
+        HealthLevels.Instance.SetEnemyHealth(200);
     }
 
     // Update is called once per frame
@@ -53,7 +61,11 @@ public class CombatCoordinator : MonoBehaviour
 
     public void Victory()
     {
-
+        combatState = EnumCombatState.Victory;
+    }
+    public void Defeat()
+    {
+        combatState = EnumCombatState.Defeat;
     }
 
     public IEnumerator BeginCombat(string enemy)
@@ -65,83 +77,123 @@ public class CombatCoordinator : MonoBehaviour
         yield return StartCoroutine(CombatLoop());
     }
 
-    private Dictionary<KeyCode, EnumAttackType> inputToOutput = new Dictionary<KeyCode, EnumAttackType> {
-        { KeyCode.X, EnumAttackType.AtkA }, { KeyCode.C, EnumAttackType.AtkB },
-        { KeyCode.UpArrow, EnumAttackType.DefUp }, { KeyCode.LeftArrow, EnumAttackType.DefLeft }
-    };
-    private List<KeyCode> inputs = new List<KeyCode> { KeyCode.X, KeyCode.C, KeyCode.UpArrow, KeyCode.LeftArrow };
+    //private Dictionary<KeyCode, EnumAttackType> inputToOutput = new Dictionary<KeyCode, EnumAttackType> {
+    //    { KeyCode.X, EnumAttackType.AtkA }, { KeyCode.C, EnumAttackType.AtkB },
+    //    { KeyCode.UpArrow, EnumAttackType.DefUp }, { KeyCode.LeftArrow, EnumAttackType.DefLeft }
+    //};
+    //private List<KeyCode> inputs = new List<KeyCode> { KeyCode.X, KeyCode.C, KeyCode.UpArrow, KeyCode.LeftArrow };
 
     private void ResolveAction(EnumAttackType action, bool success)
     {
-        // ~~~ Set player anim with action/success
-        // ~~~ Set enemy anim with action/success
-
-        if (success)
-        {
-            if (action == EnumAttackType.AtkA || action == EnumAttackType.AtkB)
-            {
-                // ~~~ damage opponent
-            }
-        }
-        else if (action == EnumAttackType.DefUp || action == EnumAttackType.DefLeft)
-        {
-            // ~~~ damage player
-        }
+        CombatInfoCall?.Invoke(action, success);
     }
 
     private IEnumerator CombatLoop()
     {
-        songProgress = 0;
+        songProgress = -CombatDecoder.Instance.beatLength * CombatDecoder.Instance.beats;
+        noteTrackPeriod = CombatDecoder.Instance.beatLength * 3.0f;
         while (true)
         {
-            // ~~~ input resolution
+            // input resolution
             EnumAttackType btnInput = EnumAttackType.None;
-            for (int i = 0; i < inputs.Count; ++i)
+            //for (int i = 0; i < inputs.Count; ++i)
+            //{
+            //    if (Input.GetKeyDown(inputs[i]))
+            //    {
+            //        btnInput = inputToOutput[inputs[i]];
+            //        break;
+            //    }
+            //}
+
+            if (InputManager.AButton)
             {
-                if (Input.GetKeyDown(inputs[i]))
-                {
-                    btnInput = inputToOutput[inputs[i]];
-                    break;
-                }
+                btnInput = EnumAttackType.AtkA;
+            }
+            else if (InputManager.BButton)
+            {
+                btnInput = EnumAttackType.AtkB;
+            }
+            else if (InputManager.LeftArrow)
+            {
+                btnInput = EnumAttackType.DefLeft;
+            }
+            else if (InputManager.UpArrow)
+            {
+                btnInput = EnumAttackType.DefUp;
             }
 
             if (btnInput != EnumAttackType.None)
             {
-                ResolveAction(btnInput, NoteQueueItem(0).IsSatisfied(btnInput));
+                Debug.Log($"Found input: {btnInput.ToString()}");
+
+                for (int i = 0; i < noteQueue.Count; ++i)
+                {
+                    if (NoteQueueItem(i).Status == 0)
+                    {
+                        if (NoteInRange(NoteQueueItem(i)))
+                        {
+                            Debug.Log("Note in range.");
+                            ResolveAction(btnInput, NoteQueueItem(i).IsSatisfied(btnInput, songProgress));
+                            break;
+                        }
+                    }
+                    else if(songProgress - NoteQueueItem(i).LockTime < 0.1)
+                    {
+                        break;
+                    }
+                }
             }
 
-            // ~~~ advance notes/animations
-            //if (songProgress > NoteQueueItem(0).PlayTime)
-            //{
-            //    NoteQueueItem(0).Reincarnate();
-            //    queueHeadIdx++;
-            //    queueHeadIdx %= noteQueue.Count;
-            //}
-            //if (NoteQueueItem(0).PlayTime - songProgress < CombatDecoder.Instance.beatLength)
-            //{
-            //    beatSprites[0].position = new Vector2(beatSprites[0].position.x, (1 - ((NoteQueueItem(0).PlayTime - songProgress) / CombatDecoder.Instance.beatLength)) * (goalHeight - startHeight) + startHeight);
-            //}
-            for (int i = 0; i < noteQueue.Count && i < beatSprites.Count; ++i)
+            if (combatState != EnumCombatState.Ongoing)
             {
-                if (songProgress > NoteQueueItem(i).PlayTime)
+                // ~~~ End combat things
+            }
+
+            // advance notes/animations
+            for (int i = 0; i < noteQueue.Count; ++i)
+            {
+                //if (songProgress > NoteQueueItem(i).PlayTime)
+                //{
+                //    NoteQueueItem(i).Reincarnate();
+                //    queueHeadIdx++;
+                //}
+                //if (NoteQueueItem(i).PlayTime - songProgress < CombatDecoder.Instance.beatLength)
+                //{
+                //    int spriteIdx = (queueHeadIdx + i) % beatSprites.Count;
+                //    beatSprites[spriteIdx].position = new Vector2(beatSprites[spriteIdx].position.x, 
+                //        (1 - ((NoteQueueItem(i).PlayTime - songProgress) / CombatDecoder.Instance.beatLength)) * (goalHeight - startHeight) + startHeight);
+                //}
+                //else
+                //{
+                //    break;
+                //}
+                if (NoteInRange(NoteQueueItem(i)))
                 {
-                    NoteQueueItem(i).Reincarnate();
-                    queueHeadIdx++;
-                }
-                if (NoteQueueItem(i).PlayTime - songProgress < CombatDecoder.Instance.beatLength)
-                {
-                    int spriteIdx = (queueHeadIdx + i) % beatSprites.Count;
-                    beatSprites[spriteIdx].position = new Vector2(beatSprites[spriteIdx].position.x, 
-                        (1 - ((NoteQueueItem(i).PlayTime - songProgress) / CombatDecoder.Instance.beatLength)) * (goalHeight - startHeight) + startHeight);
-                }
-                else
-                {
-                    break;
+                    if (songProgress - NoteQueueItem(i).PlayTime >= CombatDecoder.Instance.beatLength)
+                    {
+                        Debug.Log("Beat has left end of track.");
+                        NoteQueueItem(i).Reincarnate();
+                        queueHeadIdx++;
+                        AdvanceIndexCall?.Invoke();
+                        continue;
+                    }
+                    if (NoteQueueItem(i).PlayTime < songProgress && NoteQueueItem(i).Status == 0)
+                    {
+                        Debug.Log("Note close to time out.");
+                        NoteQueueItem(i).TimeOutCheck(songProgress);
+                    }
+                    BeatTrackNoteCall(i, NoteQueueItem(i));
                 }
             }
+            NoMoreBeatsCall?.Invoke();
 
             yield return null;
             songProgress += Time.deltaTime;
         }
+    }
+
+    private bool NoteInRange(CombatNote note)
+    {
+        return note.PlayTime - songProgress < noteTrackPeriod;
     }
 }
