@@ -46,7 +46,7 @@ public class InputManager : MonoBehaviour
             AButtonHeld = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             BButton = true;
         }
@@ -55,7 +55,7 @@ public class InputManager : MonoBehaviour
             BButton = false;
         }
 
-        if (Input.GetKey(KeyCode.A) && !BButton)
+        if (Input.GetKey(KeyCode.C) && !BButton)
         {
             BButtonHeld = true;
         }

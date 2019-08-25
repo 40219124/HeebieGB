@@ -5,7 +5,17 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
+    public enum eGameState
+    {
+        Initial,
+        Playing,
+        Game_Over,
+        Game_Win
+    }
+
+
     GameObject Poweroff;
+    public static eGameState GameState = eGameState.Initial;
 
     private void Awake()
     {
@@ -19,14 +29,21 @@ public class GameManager : MonoBehaviour
     {
         string currentScene = ScreenChanger.GetActiveScene().name;
 
+        if (GameState == eGameState.Game_Win && currentScene == ScreenChanger.TitleScene)
+        {
+            GameState = eGameState.Initial;
+        }
+
         if (InputManager.GetAnyButtonDown())
         {
-            if (currentScene == ScreenChanger.IntroScene)
+            if (currentScene == ScreenChanger.IntroScene || GameState == eGameState.Game_Over)
             {
+                GameState = eGameState.Initial;
                 ScreenChanger.LoadNewScene(ScreenChanger.TitleScene);
             }
             else if (currentScene == ScreenChanger.TitleScene)
             {
+                GameState = eGameState.Playing;
                 ScreenChanger.LoadFight();
             }
         }
@@ -35,5 +52,19 @@ public class GameManager : MonoBehaviour
         {
             Poweroff.SetActive(true);
         }
+    }
+
+    public static void GameWin()
+    {
+        GameState = eGameState.Game_Win;
+        Animator Game_Over_Anim = GameObject.FindGameObjectWithTag("GameOver")?.GetComponent<Animator>();
+        Game_Over_Anim?.SetTrigger("Game_Win");
+    }
+
+    public static void GameOver()
+    {
+        GameState = eGameState.Game_Over;
+        Animator Game_Over_Anim = GameObject.FindGameObjectWithTag("GameOver")?.GetComponent<Animator>();
+        Game_Over_Anim?.SetTrigger("Game_Over");
     }
 }
