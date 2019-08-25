@@ -31,6 +31,7 @@ public class CombatNote
 
     public bool IsSatisfied(EnumAttackType input, float time)
     {
+        failed = true;
         if (Mathf.Abs(playTime - time) < CombatDecoder.Instance.beatLength * 0.15)
         {
             if (aType == EnumAttackType.AtkEither)
@@ -42,12 +43,9 @@ public class CombatNote
             }
             else if (aType == input)
             {
+
                 failed = false;
             }
-        }
-        else
-        {
-            failed = true;
         }
         locked = true;
         lockTime = time;
