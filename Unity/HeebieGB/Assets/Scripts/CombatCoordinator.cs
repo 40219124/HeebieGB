@@ -96,14 +96,6 @@ public class CombatCoordinator : MonoBehaviour
         {
             // input resolution
             EnumAttackType btnInput = EnumAttackType.None;
-            //for (int i = 0; i < inputs.Count; ++i)
-            //{
-            //    if (Input.GetKeyDown(inputs[i]))
-            //    {
-            //        btnInput = inputToOutput[inputs[i]];
-            //        break;
-            //    }
-            //}
 
             if (InputManager.AButton)
             {
@@ -122,22 +114,23 @@ public class CombatCoordinator : MonoBehaviour
                 btnInput = EnumAttackType.DefUp;
             }
 
-            if (btnInput != EnumAttackType.None)
-            {
-                Debug.Log($"Found input: {btnInput.ToString()}");
+            // Input response
+            Debug.Log($"Found input: {btnInput.ToString()}");
 
-                for (int i = 0; i < noteQueue.Count; ++i)
+            for (int i = 0; i < noteQueue.Count; ++i)
+            {
+                if (NoteQueueItem(i).Status == 0)
                 {
-                    if (NoteQueueItem(i).Status == 0)
+                    if (NoteInRange(NoteQueueItem(i)))
                     {
-                        if (NoteInRange(NoteQueueItem(i)))
+                        if (btnInput != EnumAttackType.None || NoteQueueItem(i).TimeOutCheck(songProgress))
                         {
                             Debug.Log("Note in range.");
-                            ResolveAction(btnInput, NoteQueueItem(i).IsSatisfied(btnInput, songProgress));
+                            ResolveAction(NoteQueueItem(i).AtkType, NoteQueueItem(i).IsSatisfied(btnInput, songProgress));
                             break;
                         }
                     }
-                    else if(songProgress - NoteQueueItem(i).LockTime < 0.1)
+                    else if (songProgress - NoteQueueItem(i).LockTime < 0.1)
                     {
                         break;
                     }
@@ -152,21 +145,6 @@ public class CombatCoordinator : MonoBehaviour
             // advance notes/animations
             for (int i = 0; i < noteQueue.Count; ++i)
             {
-                //if (songProgress > NoteQueueItem(i).PlayTime)
-                //{
-                //    NoteQueueItem(i).Reincarnate();
-                //    queueHeadIdx++;
-                //}
-                //if (NoteQueueItem(i).PlayTime - songProgress < CombatDecoder.Instance.beatLength)
-                //{
-                //    int spriteIdx = (queueHeadIdx + i) % beatSprites.Count;
-                //    beatSprites[spriteIdx].position = new Vector2(beatSprites[spriteIdx].position.x, 
-                //        (1 - ((NoteQueueItem(i).PlayTime - songProgress) / CombatDecoder.Instance.beatLength)) * (goalHeight - startHeight) + startHeight);
-                //}
-                //else
-                //{
-                //    break;
-                //}
                 if (NoteInRange(NoteQueueItem(i)))
                 {
                     if (songProgress - NoteQueueItem(i).PlayTime >= CombatDecoder.Instance.beatLength)
@@ -180,7 +158,10 @@ public class CombatCoordinator : MonoBehaviour
                     if (NoteQueueItem(i).PlayTime < songProgress && NoteQueueItem(i).Status == 0)
                     {
                         Debug.Log("Note close to time out.");
-                        NoteQueueItem(i).TimeOutCheck(songProgress);
+                        if (NoteQueueItem(i).TimeOutCheck(songProgress))
+                        {
+                            Debug.LogError("A Christmas miracle!");
+                        }
                     }
                     BeatTrackNoteCall(i, NoteQueueItem(i));
                 }

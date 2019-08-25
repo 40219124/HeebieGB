@@ -5,6 +5,20 @@ using UnityEngine.UI;
 
 public class CombatUIHandler : MonoBehaviour
 {
+    #region singleton
+    private static CombatUIHandler instance;
+    public static CombatUIHandler Instance { get { return instance; } }
+    private CombatUIHandler() { }
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+    #endregion
+
+
     public List<UIBeat> beatSprites = new List<UIBeat>();
     private int spriteIdx = 0;
     private int recentBeatIdx = -1;
@@ -32,6 +46,9 @@ public class CombatUIHandler : MonoBehaviour
         CombatCoordinator.Instance.BeatTrackNoteCall += PlaceNote;
         CombatCoordinator.Instance.NoMoreBeatsCall += CleanExtras;
         CombatCoordinator.Instance.AdvanceIndexCall += AdvanceQueueIndex;
+
+        HealthLevels.Instance.PlayerHealthUpdateCall += UpdatePlayerHealth;
+        HealthLevels.Instance.EnemyHealthUpdateCall += UpdateEnemyHealth;
     }
 
 
@@ -60,5 +77,15 @@ public class CombatUIHandler : MonoBehaviour
     {
         spriteIdx++;
         spriteIdx %= beatSprites.Count;
+    }
+
+    public void UpdatePlayerHealth(int current, int total)
+    {
+        playerHealth.fillAmount = (float)current / total;
+    }
+
+    public void UpdateEnemyHealth(int current, int total)
+    {
+        enemyHealth.fillAmount = (float)current / total;
     }
 }

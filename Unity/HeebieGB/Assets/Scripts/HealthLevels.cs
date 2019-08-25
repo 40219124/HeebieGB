@@ -25,11 +25,9 @@ public class HealthLevels
     private int totalEnemyHealth = 200;
     private int currentEnemyHealth = 200;
 
-    public delegate void PlayerHealthUpdate(int health);
-    public PlayerHealthUpdate PlayerHealthUpdateCall;
-    
-    public delegate void EnemyHealthUpdate(int health);
-    public EnemyHealthUpdate EnemyHealthUpdateCall;
+    public delegate void HealthUpdate(int current, int total);
+    public HealthUpdate PlayerHealthUpdateCall;
+    public HealthUpdate EnemyHealthUpdateCall;
 
     public void SetEnemyHealth(int val)
     {
@@ -47,6 +45,7 @@ public class HealthLevels
         {
             currentEnemyHealth = Mathf.Clamp(value, 0, totalEnemyHealth);
             // ~~~ display health
+            EnemyHealthUpdateCall?.Invoke(currentEnemyHealth, totalEnemyHealth);
             if (currentEnemyHealth == 0)
             {
                 // ~~~ win combat
@@ -64,12 +63,16 @@ public class HealthLevels
         {
             currentPlayerHealth = Mathf.Clamp(value, 0, totalPlayerHealth);
             // ~~~ display health
+            PlayerHealthUpdateCall?.Invoke(currentPlayerHealth, totalPlayerHealth);
             if (currentPlayerHealth == 0)
             {
                 // ~~~ lose combat
             }
         }
     }
+
+    public float CurrentEnemyFraction { get { return (float)currentEnemyHealth / totalEnemyHealth; } }
+    public float CurrentPlayerFraction { get { return (float)currentPlayerHealth / totalPlayerHealth; } }
 
     private void GetCombatInfo(EnumAttackType action, bool successful)
     {
