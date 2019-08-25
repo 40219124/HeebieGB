@@ -43,45 +43,42 @@ public class CombatCoordinator : MonoBehaviour
     public delegate void NoMoreBeats();
     public NoMoreBeats NoMoreBeatsCall;
 
+    public delegate void CombatOver();
+    public CombatOver CombatOverCall;
+
     private float songProgress = -1;
     public float SongProgress { get { return songProgress; } }
     public float noteTrackPeriod = -1;
     private EnumCombatState combatState = EnumCombatState.Ongoing;
 
-    void Start()
-    {
-        HealthLevels.Instance.SetEnemyHealth(200);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    private bool playing = false;
 
     public void Victory()
     {
         combatState = EnumCombatState.Victory;
+        GameManager.GameWin();
     }
     public void Defeat()
     {
         combatState = EnumCombatState.Defeat;
+        GameManager.GameOver();
     }
 
     public IEnumerator BeginCombat(string enemy)
     {
+        combatState = EnumCombatState.Ongoing;
         yield return StartCoroutine(CombatDecoder.Instance.DecodeFile("Assets/Resources/CombatTiming/" + enemy + ".txt"));
         Debug.Log("Read successful");
         // ~~~ Bar of lead in
         // ~~~ Begin combat proper
         yield return StartCoroutine(CombatLoop());
+        CombatOverCall?.Invoke();
     }
 
-    //private Dictionary<KeyCode, EnumAttackType> inputToOutput = new Dictionary<KeyCode, EnumAttackType> {
-    //    { KeyCode.X, EnumAttackType.AtkA }, { KeyCode.C, EnumAttackType.AtkB },
-    //    { KeyCode.UpArrow, EnumAttackType.DefUp }, { KeyCode.LeftArrow, EnumAttackType.DefLeft }
-    //};
-    //private List<KeyCode> inputs = new List<KeyCode> { KeyCode.X, KeyCode.C, KeyCode.UpArrow, KeyCode.LeftArrow };
+    private bool NoteInRange(CombatNote note)
+    {
+        return note.PlayTime - songProgress < noteTrackPeriod;
+    }
 
     private void ResolveAction(EnumAttackType action, bool success)
     {
@@ -94,6 +91,12 @@ public class CombatCoordinator : MonoBehaviour
         noteTrackPeriod = CombatDecoder.Instance.beatLength * 3.0f;
         while (true)
         {
+            if(!playing && songProgress >= 0.0f)
+            {
+                GetComponent<AudioSource>()?.Play();
+                playing = true;
+            }
+
             // input resolution
             EnumAttackType btnInput = EnumAttackType.None;
 
@@ -140,6 +143,7 @@ public class CombatCoordinator : MonoBehaviour
             if (combatState != EnumCombatState.Ongoing)
             {
                 // ~~~ End combat things
+                break;
             }
 
             // advance notes/animations
@@ -173,8 +177,30 @@ public class CombatCoordinator : MonoBehaviour
         }
     }
 
-    private bool NoteInRange(CombatNote note)
+    private void RefreshCombat()
     {
-        return note.PlayTime - songProgress < noteTrackPeriod;
+        noteQueue.Clear();
+        queueHeadIdx = 0;
+        songProgress = -1;
+        noteTrackPeriod = -1;
+        combatState = EnumCombatState.Nothing;
+    }
+
+    public void ClearDelegates()
+    {
+        CombatInfoCall = null;
+        BeatTrackNoteCall = null;
+        AdvanceIndexCall = null;
+        NoMoreBeatsCall = null;
+        CombatOverCall = null;
+    }
+
+    public void FillDelegates()
+    {
+        HealthLevels.Instance.SetEnemyHealth(200);
+        HealthLevels.Instance.CombatEndVictoryCall += Victory;
+        HealthLevels.Instance.CombatEndDefeatCall += Defeat;
+
+        CombatOverCall += RefreshCombat;
     }
 }

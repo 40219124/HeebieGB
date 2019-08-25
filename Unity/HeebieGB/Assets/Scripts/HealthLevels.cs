@@ -17,7 +17,7 @@ public class HealthLevels
             return instance;
         }
     }
-    private HealthLevels() { CombatCoordinator.Instance.CombatInfoCall += GetCombatInfo; }
+    private HealthLevels() { }
     #endregion
 
     private int totalPlayerHealth = 100;
@@ -28,6 +28,10 @@ public class HealthLevels
     public delegate void HealthUpdate(int current, int total);
     public HealthUpdate PlayerHealthUpdateCall;
     public HealthUpdate EnemyHealthUpdateCall;
+
+    public delegate void CombatEnd();
+    public CombatEnd CombatEndVictoryCall;
+    public CombatEnd CombatEndDefeatCall;
 
     public void SetEnemyHealth(int val)
     {
@@ -49,6 +53,7 @@ public class HealthLevels
             if (currentEnemyHealth == 0)
             {
                 // ~~~ win combat
+                CombatEndVictoryCall?.Invoke();
             }
         }
     }
@@ -67,6 +72,7 @@ public class HealthLevels
             if (currentPlayerHealth == 0)
             {
                 // ~~~ lose combat
+                CombatEndDefeatCall?.Invoke();
             }
         }
     }
@@ -90,5 +96,25 @@ public class HealthLevels
                 CurrentPlayerHealth -= 15;
             }
         }
+    }
+
+    public void PostCombatRefresh()
+    {
+        currentPlayerHealth = totalPlayerHealth;
+        currentEnemyHealth = totalEnemyHealth;
+    }
+
+    public void ClearDelegates()
+    {
+        PlayerHealthUpdateCall = null;
+        EnemyHealthUpdateCall = null;
+        CombatEndVictoryCall = null;
+        CombatEndDefeatCall = null;
+    }
+
+    public void FillDelegates()
+    {
+        CombatCoordinator.Instance.CombatInfoCall += GetCombatInfo;
+        CombatCoordinator.Instance.CombatOverCall += PostCombatRefresh;
     }
 }

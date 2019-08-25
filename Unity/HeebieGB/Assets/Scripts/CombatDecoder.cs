@@ -218,4 +218,12 @@ public class CombatDecoder : MonoBehaviour
         }
     }
 
+    public void PostCombatRefresh()
+    {
+        beats = -1;
+        beatType = -1;
+        bpm = -1;
+        beatLength = -1;
+        rotationLength = -1;
+    }
 }

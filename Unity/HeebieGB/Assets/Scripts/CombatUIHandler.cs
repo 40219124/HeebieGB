@@ -42,13 +42,6 @@ public class CombatUIHandler : MonoBehaviour
             startHeight = beatStart.position.y;
             goalHeight = beatEnd.position.y;
         }
-
-        CombatCoordinator.Instance.BeatTrackNoteCall += PlaceNote;
-        CombatCoordinator.Instance.NoMoreBeatsCall += CleanExtras;
-        CombatCoordinator.Instance.AdvanceIndexCall += AdvanceQueueIndex;
-
-        HealthLevels.Instance.PlayerHealthUpdateCall += UpdatePlayerHealth;
-        HealthLevels.Instance.EnemyHealthUpdateCall += UpdateEnemyHealth;
     }
 
 
@@ -87,5 +80,23 @@ public class CombatUIHandler : MonoBehaviour
     public void UpdateEnemyHealth(int current, int total)
     {
         enemyHealth.fillAmount = (float)current / total;
+    }
+
+    public void PostCombatRefresh()
+    {
+        spriteIdx = 0;
+        recentBeatIdx = -1;
+        CleanExtras();
+    }
+
+    public void FillDelegates()
+    {
+        CombatCoordinator.Instance.BeatTrackNoteCall += PlaceNote;
+        CombatCoordinator.Instance.NoMoreBeatsCall += CleanExtras;
+        CombatCoordinator.Instance.AdvanceIndexCall += AdvanceQueueIndex;
+        CombatCoordinator.Instance.CombatOverCall += PostCombatRefresh;
+
+        HealthLevels.Instance.PlayerHealthUpdateCall += UpdatePlayerHealth;
+        HealthLevels.Instance.EnemyHealthUpdateCall += UpdateEnemyHealth;
     }
 }
