@@ -1,0 +1,14 @@
+4,4;110;s;b,1;a,1,1;a,3,1;b,2;d,2,2;a,2,1;d,3,1;a,12,3;e
+
+4,4		time signature
+110		bpm
+s 		start
+b,1		bar 1
+a,1,1	attack first crotchet					(bar 1 beat 1)
+a,3,1	attack third crotchet					(bar 1 beat 3)
+b,2		bar 2
+d,2,2	defend second quaver(crotchet/2)		(bar 2 beat 1.5)
+a,2,1 	attack second crotchet					(bar 2 beat 2)
+d,3,1	defend thrid crotchet					(bar 2 beat 3)
+a,12,3	attack 12th triplet						(bar 2 beat 4 triplet 3)
+e		end
