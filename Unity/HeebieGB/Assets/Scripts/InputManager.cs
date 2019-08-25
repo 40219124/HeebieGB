@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     public static bool AButton = false;
     public static bool BButton = false;
     public static bool Start = false;
-    public static bool Select = false
+    public static bool Select = false;
 
     public static bool UpArrowHeld = false;
     public static bool DownArrowHeld = false;
