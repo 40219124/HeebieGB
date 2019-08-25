@@ -11,7 +11,17 @@ public class InputManager : MonoBehaviour
     public static bool AButton = false;
     public static bool BButton = false;
     public static bool Start = false;
-    public static bool Select = false;
+    public static bool Select = false
+
+    public static bool UpArrowHeld = false;
+    public static bool DownArrowHeld = false;
+    public static bool LeftArrowHeld = false;
+    public static bool RightArrowHeld = false;
+    public static bool AButtonHeld = false;
+    public static bool BButtonHeld = false;
+    public static bool StartHeld = false;
+    public static bool SelectHeld = false;
+
     static float powerOffTime = 0;
     const float waitTime = 1.0f;
 
@@ -27,6 +37,15 @@ public class InputManager : MonoBehaviour
             AButton = false;
         }
 
+        if (Input.GetKey(KeyCode.X) && !AButton)
+        {
+            AButtonHeld = true;
+        }
+        else
+        {
+            AButtonHeld = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.A))
         {
             BButton = true;
@@ -34,6 +53,15 @@ public class InputManager : MonoBehaviour
         else
         {
             BButton = false;
+        }
+
+        if (Input.GetKey(KeyCode.A) && !BButton)
+        {
+            BButtonHeld = true;
+        }
+        else
+        {
+            BButtonHeld = false;
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -45,6 +73,15 @@ public class InputManager : MonoBehaviour
             UpArrow = false;
         }
 
+        if (Input.GetKey(KeyCode.UpArrow) && !UpArrow)
+        {
+            UpArrowHeld = true;
+        }
+        else
+        {
+            UpArrowHeld = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             DownArrow = true;
@@ -52,6 +89,15 @@ public class InputManager : MonoBehaviour
         else
         {
             DownArrow = false;
+        }
+
+        if (Input.GetKey(KeyCode.DownArrow) && !DownArrow)
+        {
+            DownArrowHeld = true;
+        }
+        else
+        {
+            DownArrowHeld = false;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -63,6 +109,15 @@ public class InputManager : MonoBehaviour
             LeftArrow = false;
         }
 
+        if (Input.GetKey(KeyCode.LeftArrow) && !LeftArrow)
+        {
+            LeftArrowHeld = true;
+        }
+        else
+        {
+            LeftArrowHeld = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             RightArrow = true;
@@ -70,6 +125,15 @@ public class InputManager : MonoBehaviour
         else
         {
             RightArrow = false;
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow) && !RightArrow)
+        {
+            RightArrowHeld = true;
+        }
+        else
+        {
+            RightArrowHeld = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
@@ -81,6 +145,15 @@ public class InputManager : MonoBehaviour
             Start = false;
         }
 
+        if (Input.GetKey(KeyCode.Return) && !Start)
+        {
+            StartHeld = true;
+        }
+        else
+        {
+            StartHeld = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.RightShift))
         {
             Select = true;
@@ -88,6 +161,15 @@ public class InputManager : MonoBehaviour
         else
         {
             Select = false;
+        }
+
+        if (Input.GetKey(KeyCode.RightShift) && !Select)
+        {
+            SelectHeld = true;
+        }
+        else
+        {
+            SelectHeld = false;
         }
 
         if (Input.GetKey(KeyCode.Escape))
