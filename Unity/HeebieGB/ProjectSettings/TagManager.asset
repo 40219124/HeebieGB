@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - powerScreen
+  - GameOver
+  - ManDance
   layers:
   - Default
   - TransparentFX
