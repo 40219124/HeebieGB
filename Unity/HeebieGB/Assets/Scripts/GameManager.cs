@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     {
         Initial,
         Playing,
-        Game_Over
+        Game_Over,
+        Game_Win
     }
 
 
@@ -27,6 +28,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         string currentScene = ScreenChanger.GetActiveScene().name;
+
+        if (GameState == eGameState.Game_Win && currentScene == ScreenChanger.TitleScene)
+        {
+            GameState = eGameState.Initial;
+        }
 
         if (InputManager.GetAnyButtonDown())
         {
@@ -46,6 +52,13 @@ public class GameManager : MonoBehaviour
         {
             Poweroff.SetActive(true);
         }
+    }
+
+    public static void GameWin()
+    {
+        GameState = eGameState.Game_Win;
+        Animator Game_Over_Anim = GameObject.FindGameObjectWithTag("GameOver")?.GetComponent<Animator>();
+        Game_Over_Anim?.SetTrigger("Game_Win");
     }
 
     public static void GameOver()

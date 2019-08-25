@@ -6,6 +6,7 @@ TagManager:
   tags:
   - powerScreen
   - GameOver
+  - ManDance
   layers:
   - Default
   - TransparentFX
