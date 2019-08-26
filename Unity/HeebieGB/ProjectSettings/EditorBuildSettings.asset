@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Credits.unity
     guid: 2b8eb3be1c64f7d42865a329ac8365cc
+  - enabled: 1
+    path: Assets/Scenes/BeatEngine.unity
+    guid: 8726b90e1d6d4a04ebd355c6d2569526
   m_configObjects: {}

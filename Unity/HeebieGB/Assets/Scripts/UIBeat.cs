@@ -67,5 +67,6 @@ public class UIBeat : MonoBehaviour
         animator.runtimeAnimatorController = null;
         currentAnimator = EnumAttackType.None;
         transform.localScale = Vector3.one;
+        transform.position = -10 * Vector3.one;
     }
 }

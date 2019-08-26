@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
     bool done = false;
     // Update is called once per frame
     void Update()
@@ -19,11 +14,25 @@ public class Manager : MonoBehaviour
             done = true;
         }
         Timer.UpdateTimers(Time.deltaTime);
-
     }
 
     public void StartCombat()
     {
+        ClearDelegates();
+        FillDelegates();
         StartCoroutine(CombatCoordinator.Instance.BeginCombat("Slime"));
+    }
+
+    private void ClearDelegates()
+    {
+        HealthLevels.Instance.ClearDelegates();
+        CombatCoordinator.Instance.ClearDelegates();
+    }
+
+    private void FillDelegates()
+    {
+        HealthLevels.Instance.FillDelegates();
+        CombatCoordinator.Instance.FillDelegates();
+        CombatUIHandler.Instance.FillDelegates();
     }
 }

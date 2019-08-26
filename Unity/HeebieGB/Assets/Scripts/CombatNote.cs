@@ -31,24 +31,27 @@ public class CombatNote
 
     public bool IsSatisfied(EnumAttackType input, float time)
     {
-        failed = true;
-        if (Mathf.Abs(playTime - time) < CombatDecoder.Instance.beatLength * 0.15)
+        if (!locked)
         {
-            if (aType == EnumAttackType.AtkEither)
+            failed = true;
+            if (Mathf.Abs(playTime - time) < CombatDecoder.Instance.beatLength * 0.15)
             {
-                if (input == EnumAttackType.AtkA || input == EnumAttackType.AtkB)
+                if (aType == EnumAttackType.AtkEither)
                 {
+                    if (input == EnumAttackType.AtkA || input == EnumAttackType.AtkB)
+                    {
+                        failed = false;
+                    }
+                }
+                else if (aType == input)
+                {
+
                     failed = false;
                 }
             }
-            else if (aType == input)
-            {
-
-                failed = false;
-            }
+            locked = true;
+            lockTime = time;
         }
-        locked = true;
-        lockTime = time;
 
         Debug.Log($"Satisfaction: {(!failed).ToString()}");
         return !failed;
@@ -85,7 +88,7 @@ public class CombatNote
         }
     }
 
-    public void TimeOutCheck(float time)
+    public bool TimeOutCheck(float time)
     {
         if (time > autoFailTime && !locked)
         {
@@ -93,6 +96,7 @@ public class CombatNote
             locked = true;
             lockTime = time;
         }
+        return failed;
     }
 
     public EnumAttackType AtkType { get { return aType; } }

@@ -5,6 +5,20 @@ using UnityEngine.UI;
 
 public class CombatUIHandler : MonoBehaviour
 {
+    #region singleton
+    private static CombatUIHandler instance;
+    public static CombatUIHandler Instance { get { return instance; } }
+    private CombatUIHandler() { }
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+    #endregion
+
+
     public List<UIBeat> beatSprites = new List<UIBeat>();
     private int spriteIdx = 0;
     private int recentBeatIdx = -1;
@@ -28,10 +42,6 @@ public class CombatUIHandler : MonoBehaviour
             startHeight = beatStart.position.y;
             goalHeight = beatEnd.position.y;
         }
-
-        CombatCoordinator.Instance.BeatTrackNoteCall += PlaceNote;
-        CombatCoordinator.Instance.NoMoreBeatsCall += CleanExtras;
-        CombatCoordinator.Instance.AdvanceIndexCall += AdvanceQueueIndex;
     }
 
 
@@ -60,5 +70,33 @@ public class CombatUIHandler : MonoBehaviour
     {
         spriteIdx++;
         spriteIdx %= beatSprites.Count;
+    }
+
+    public void UpdatePlayerHealth(int current, int total)
+    {
+        playerHealth.fillAmount = (float)current / total;
+    }
+
+    public void UpdateEnemyHealth(int current, int total)
+    {
+        enemyHealth.fillAmount = (float)current / total;
+    }
+
+    public void PostCombatRefresh()
+    {
+        spriteIdx = 0;
+        recentBeatIdx = -1;
+        CleanExtras();
+    }
+
+    public void FillDelegates()
+    {
+        CombatCoordinator.Instance.BeatTrackNoteCall += PlaceNote;
+        CombatCoordinator.Instance.NoMoreBeatsCall += CleanExtras;
+        CombatCoordinator.Instance.AdvanceIndexCall += AdvanceQueueIndex;
+        CombatCoordinator.Instance.CombatOverCall += PostCombatRefresh;
+
+        HealthLevels.Instance.PlayerHealthUpdateCall += UpdatePlayerHealth;
+        HealthLevels.Instance.EnemyHealthUpdateCall += UpdateEnemyHealth;
     }
 }
