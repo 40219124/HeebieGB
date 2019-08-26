@@ -68,10 +68,10 @@ SpriteAtlas:
     - {fileID: 1905536800130909030, guid: 9041c777f1a545c4d9f348bfdc20bfba, type: 3}
     - {fileID: 21300000, guid: 687d089005cd5ea4a9d12b49ee834b28, type: 3}
     - {fileID: 21300000, guid: 8f1373137809aa94bae265d455d16794, type: 3}
-    - {fileID: 21300000, guid: 3f96b2fc75cb8554297bc049af002bf7, type: 3}
     - {fileID: 4966648748027138055, guid: 4ab207e507e4d2a4b9b8e49c1a5435c6, type: 3}
     - {fileID: -4777526967497847911, guid: 4ab207e507e4d2a4b9b8e49c1a5435c6, type: 3}
-    totalSpriteSurfaceArea: 16320
+    - {fileID: 5382999446554173884, guid: 3f96b2fc75cb8554297bc049af002bf7, type: 3}
+    totalSpriteSurfaceArea: 15652
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -103,7 +103,7 @@ SpriteAtlas:
   - {fileID: 2063522066165604161, guid: 97abc9abacaf72f47b23d8ca96873bad, type: 3}
   - {fileID: -9175971462880194535, guid: 97abc9abacaf72f47b23d8ca96873bad, type: 3}
   - {fileID: 1664005831494872149, guid: 97abc9abacaf72f47b23d8ca96873bad, type: 3}
-  - {fileID: 21300000, guid: 3f96b2fc75cb8554297bc049af002bf7, type: 3}
+  - {fileID: 5382999446554173884, guid: 3f96b2fc75cb8554297bc049af002bf7, type: 3}
   m_PackedSpriteNamesToIndex:
   - enemy_health_bar
   - B_Explode_1
