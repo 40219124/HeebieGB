@@ -14,17 +14,16 @@ public class CombatNote
     public static float loopLength = -1;
 
     EnumAttackType aType = EnumAttackType.None;
-    Timer timer;
     float playTime = -1;
     float autoFailTime = -1;
     bool failed = false;
     bool locked = false;
     float lockTime = -1;
+    bool resolved = false;
 
     public CombatNote(EnumAttackType type, float timeTill)
     {
         aType = type;
-        timer = new Timer(timeTill); // ~~~ remove once verified redundant
         playTime = timeTill;
         autoFailTime = playTime + CombatDecoder.Instance.beatLength * 0.15f;
     }
@@ -64,6 +63,7 @@ public class CombatNote
         lockTime = -1;
         locked = false;
         failed = false;
+        resolved = false;
     }
 
     public int Status
@@ -105,4 +105,5 @@ public class CombatNote
     public float LockTime { get { return lockTime; } }
     public float PlayTime { get { return playTime; } }
     public float AutoFailTime { get { return autoFailTime; } }
+    public bool Resolved { get { return resolved; } set { resolved = value; } }
 }

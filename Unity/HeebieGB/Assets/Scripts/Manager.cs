@@ -34,5 +34,7 @@ public class Manager : MonoBehaviour
         HealthLevels.Instance.FillDelegates();
         CombatCoordinator.Instance.FillDelegates();
         CombatUIHandler.Instance.FillDelegates();
+        SlimeAnimHandler.Instance.FillDelegates();
+        PlayerAnimHandler.Instance.FillDelegates();
     }
 }

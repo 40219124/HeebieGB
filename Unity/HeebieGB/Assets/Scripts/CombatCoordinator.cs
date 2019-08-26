@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public enum EnumCombatState
 {
@@ -33,6 +32,9 @@ public class CombatCoordinator : MonoBehaviour
 
     public delegate void CombatInformation(EnumAttackType action, bool successful);
     public CombatInformation CombatInfoCall;
+
+    public delegate void AnimationSpeed(float beatLength);
+    public AnimationSpeed AnimationSpeedCall;
 
     public delegate void BeatTrackNote(int beatIdx, CombatNote note);
     public BeatTrackNote BeatTrackNoteCall;
@@ -87,11 +89,12 @@ public class CombatCoordinator : MonoBehaviour
 
     private IEnumerator CombatLoop()
     {
+        AnimationSpeedCall?.Invoke(CombatDecoder.Instance.beatLength);
         songProgress = -CombatDecoder.Instance.beatLength * CombatDecoder.Instance.beats;
         noteTrackPeriod = CombatDecoder.Instance.beatLength * 3.0f;
         while (true)
         {
-            if(!playing && songProgress >= 0.0f)
+            if (!playing && songProgress >= 0.0f)
             {
                 GetComponent<AudioSource>()?.Play();
                 playing = true;
@@ -129,7 +132,7 @@ public class CombatCoordinator : MonoBehaviour
                         if (btnInput != EnumAttackType.None || NoteQueueItem(i).TimeOutCheck(songProgress))
                         {
                             Debug.Log("Note in range.");
-                            ResolveAction(NoteQueueItem(i).AtkType, NoteQueueItem(i).IsSatisfied(btnInput, songProgress));
+                            NoteQueueItem(i).IsSatisfied(btnInput, songProgress);
                             break;
                         }
                     }
@@ -140,13 +143,33 @@ public class CombatCoordinator : MonoBehaviour
                 }
             }
 
+            // Response to beats reaching goal
+            for (int i = 0; i < noteQueue.Count; ++i)
+            {
+                CombatNote note = NoteQueueItem(i);
+                if (songProgress > note.PlayTime)
+                {
+                    if (!note.Resolved && note.Status != 0)
+                    {
+                        // Note resolution
+                        ResolveAction(note.AtkType, !note.Failed);
+                        note.Resolved = true;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // Check for combat finish
             if (combatState != EnumCombatState.Ongoing)
             {
                 // ~~~ End combat things
                 break;
             }
 
-            // advance notes/animations
+            // Render beats
             for (int i = 0; i < noteQueue.Count; ++i)
             {
                 if (NoteInRange(NoteQueueItem(i)))
@@ -189,6 +212,7 @@ public class CombatCoordinator : MonoBehaviour
     public void ClearDelegates()
     {
         CombatInfoCall = null;
+        AnimationSpeedCall = null;
         BeatTrackNoteCall = null;
         AdvanceIndexCall = null;
         NoMoreBeatsCall = null;
