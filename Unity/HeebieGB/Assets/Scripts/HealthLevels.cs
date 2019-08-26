@@ -33,6 +33,16 @@ public class HealthLevels
     public CombatEnd CombatEndVictoryCall;
     public CombatEnd CombatEndDefeatCall;
 
+    public int GetTotalPlayerHealth()
+    {
+        return totalPlayerHealth;
+    }
+
+    public int GetTotalEnemyHealth()
+    {
+        return totalEnemyHealth;
+    }
+
     public void SetEnemyHealth(int val)
     {
         totalEnemyHealth = val;

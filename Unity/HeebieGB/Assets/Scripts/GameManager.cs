@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
         Initial,
         Playing,
         Game_Over,
-        Game_Win
+        Game_Win,
+        OverWorld
     }
 
 
@@ -43,8 +44,8 @@ public class GameManager : MonoBehaviour
             }
             else if (currentScene == ScreenChanger.TitleScene)
             {
-                GameState = eGameState.Playing;
-                ScreenChanger.LoadFight();
+                GameState = eGameState.OverWorld;
+                ScreenChanger.LoadNewScene(ScreenChanger.TDScene);
             }
         }
 

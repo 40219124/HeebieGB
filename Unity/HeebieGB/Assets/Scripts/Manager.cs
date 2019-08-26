@@ -5,6 +5,7 @@ using UnityEngine;
 public class Manager : MonoBehaviour
 {
     bool done = false;
+
     // Update is called once per frame
     void Update()
     {

@@ -56,7 +56,15 @@ public class CombatCoordinator : MonoBehaviour
     public void Victory()
     {
         combatState = EnumCombatState.Victory;
-        GameManager.GameWin();
+        if (VictoryChecker.EnemiesLeft > 0)
+        {
+            ScreenChanger.UnloadFight();
+            GameManager.GameState = GameManager.eGameState.OverWorld;
+        }
+        else
+        {
+            GameManager.GameWin();
+        }
     }
     public void Defeat()
     {
