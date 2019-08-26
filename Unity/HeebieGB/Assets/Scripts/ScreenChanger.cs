@@ -11,6 +11,7 @@ public class ScreenChanger : MonoBehaviour
     public static string FightScene = "Game";
     public static string FightHudScene = "HUD";
     public static string EngineScene = "BeatEngine";
+    public static string TDScene = "TopDown";
 
     private void Awake()
     {
@@ -40,13 +41,18 @@ public class ScreenChanger : MonoBehaviour
     {
         LoadNewScreens(screenName);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(screenName));
+
+    }
+    public static bool IsSceneLoaded(string sceneName)
+    {
+        return SceneManager.GetSceneByName(sceneName).isLoaded;
     }
 
     public static void LoadFight()
     {
         if (!SceneManager.GetSceneByName(FightScene).isLoaded)
         {
-            LoadNewScene(FightScene);
+            LoadNewScreens(FightScene);
         }
         if (!SceneManager.GetSceneByName(FightHudScene).isLoaded)
         {
@@ -55,6 +61,35 @@ public class ScreenChanger : MonoBehaviour
         if (!SceneManager.GetSceneByName(EngineScene).isLoaded)
         {
             LoadNewScreens(EngineScene);
+        }
+    }
+
+    public static IEnumerator<YieldInstruction> SetActiveWhenLoaded(string sceneName)
+    {
+        while (!SceneManager.GetSceneByName(sceneName).isLoaded)
+        {
+            yield return null;
+        }
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+    }
+
+    public static void UnloadFight()
+    {
+        if (SceneManager.GetSceneByName(FightScene).isLoaded)
+        {
+            SceneManager.UnloadSceneAsync(FightScene);
+        }
+        if (SceneManager.GetSceneByName(FightHudScene).isLoaded)
+        {
+            SceneManager.UnloadSceneAsync(FightHudScene);
+        }
+        if (SceneManager.GetSceneByName(EngineScene).isLoaded)
+        {
+            SceneManager.UnloadSceneAsync(EngineScene);
+        }
+        if (SceneManager.GetSceneByName(TDScene).isLoaded)
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(TDScene));
         }
     }
 

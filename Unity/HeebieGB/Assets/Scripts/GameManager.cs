@@ -10,12 +10,16 @@ public class GameManager : MonoBehaviour
         Initial,
         Playing,
         Game_Over,
-        Game_Win
+        Game_Win,
+        OverWorld
     }
 
 
     GameObject Poweroff;
     public static eGameState GameState = eGameState.Initial;
+    float gameOverTimer = 0.0f;
+    const float gameOverWait = 2.0f;
+    bool gameOverInput = false;
 
     private void Awake()
     {
@@ -27,6 +31,21 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (GameState == eGameState.Game_Over && !gameOverInput)
+        {
+            gameOverTimer += Time.deltaTime;
+            if (gameOverTimer >= gameOverWait)
+            {
+                gameOverInput = true;
+            }
+        }
+
+        if (gameOverInput && GameState != eGameState.Game_Over)
+        {
+            gameOverInput = false;
+        }
+
         string currentScene = ScreenChanger.GetActiveScene().name;
 
         if (GameState == eGameState.Game_Win && currentScene == ScreenChanger.TitleScene)
@@ -36,15 +55,15 @@ public class GameManager : MonoBehaviour
 
         if (InputManager.GetAnyButtonDown())
         {
-            if (currentScene == ScreenChanger.IntroScene || GameState == eGameState.Game_Over)
+            if (currentScene == ScreenChanger.IntroScene || (GameState == eGameState.Game_Over && gameOverInput))
             {
                 GameState = eGameState.Initial;
                 ScreenChanger.LoadNewScene(ScreenChanger.TitleScene);
             }
             else if (currentScene == ScreenChanger.TitleScene)
             {
-                GameState = eGameState.Playing;
-                ScreenChanger.LoadFight();
+                GameState = eGameState.OverWorld;
+                ScreenChanger.LoadNewScene(ScreenChanger.TDScene);
             }
         }
 

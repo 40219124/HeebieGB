@@ -62,6 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\FadeBehaviour.cs" />
+    <Compile Include="Assets\FightTransitionBehaviour.cs" />
     <Compile Include="Assets\Scripts\CombatCoordinator.cs" />
     <Compile Include="Assets\Scripts\CombatDecoder.cs" />
     <Compile Include="Assets\Scripts\CombatNote.cs" />
@@ -78,6 +80,9 @@
     <Compile Include="Assets\Scripts\SlimeAnimHandler.cs" />
     <Compile Include="Assets\Scripts\Timer.cs" />
     <Compile Include="Assets\Scripts\UIBeat.cs" />
+    <Compile Include="Assets\SlimeAI.cs" />
+    <Compile Include="Assets\TopDown\Player.cs" />
+    <Compile Include="Assets\VictoryChecker.cs" />
     <None Include="Assets\Resources\CombatTiming\Reference.txt" />
     <None Include="Assets\Resources\CombatTiming\Demo.txt" />
     <None Include="Assets\Resources\CombatTiming\Slime.txt" />
