@@ -74,8 +74,10 @@
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\introAniimationBehaviour.cs" />
     <Compile Include="Assets\Scripts\Manager.cs" />
+    <Compile Include="Assets\Scripts\PlayerAnimHandler.cs" />
     <Compile Include="Assets\Scripts\PowerOffBehaviour.cs" />
     <Compile Include="Assets\Scripts\ScreenChanger.cs" />
+    <Compile Include="Assets\Scripts\SlimeAnimHandler.cs" />
     <Compile Include="Assets\Scripts\Timer.cs" />
     <Compile Include="Assets\Scripts\UIBeat.cs" />
     <Compile Include="Assets\SlimeAI.cs" />

@@ -17,8 +17,7 @@ public class CombatUIHandler : MonoBehaviour
         }
     }
     #endregion
-
-
+    
     public List<UIBeat> beatSprites = new List<UIBeat>();
     private int spriteIdx = 0;
     private int recentBeatIdx = -1;
@@ -32,6 +31,8 @@ public class CombatUIHandler : MonoBehaviour
     private Image enemyHealth;
     [SerializeField]
     private Image playerHealth;
+    [SerializeField]
+    private Animator trackAnimator;
 
 
     // Start is called before the first frame update
@@ -44,6 +45,10 @@ public class CombatUIHandler : MonoBehaviour
         }
     }
 
+    public void SetAnimationSpeed(float speed)
+    {
+        trackAnimator?.SetFloat("BeatLength", speed);
+    }
 
     public void PlaceNote(int beatIdx, CombatNote note)
     {
@@ -95,6 +100,7 @@ public class CombatUIHandler : MonoBehaviour
         CombatCoordinator.Instance.NoMoreBeatsCall += CleanExtras;
         CombatCoordinator.Instance.AdvanceIndexCall += AdvanceQueueIndex;
         CombatCoordinator.Instance.CombatOverCall += PostCombatRefresh;
+        CombatCoordinator.Instance.AnimationSpeedCall += SetAnimationSpeed;
 
         HealthLevels.Instance.PlayerHealthUpdateCall += UpdatePlayerHealth;
         HealthLevels.Instance.EnemyHealthUpdateCall += UpdateEnemyHealth;
