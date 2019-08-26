@@ -47,15 +47,22 @@ public class UIBeat : MonoBehaviour
             {
                 animator.SetBool("Pop", true);
             }
-            else if (note.Status == -1 && animator.GetInteger("State") == 0)
+            else if (note.Status == -1)
             {
-                if (note.AtkType.ToString().Contains("Def"))
+                if (animator.GetInteger("State") == 0)
                 {
-                    animator.SetInteger("State", 1);
+                    if (note.AtkType.ToString().Contains("Def"))
+                    {
+                        animator.SetInteger("State", 1);
+                    }
+                    else if (note.AtkType.ToString().Contains("Atk"))
+                    {
+                        animator.SetInteger("State", 2);
+                    }
                 }
-                else if (note.AtkType.ToString().Contains("Atk"))
+                if(CombatCoordinator.Instance.SongProgress > note.PlayTime && animator.GetBool("Pop") != true)
                 {
-                    animator.SetInteger("State", 2);
+                    animator.SetBool("Pop", true);
                 }
             }
         }
