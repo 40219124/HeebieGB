@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -153,6 +154,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -265,6 +267,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -347,6 +350,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -440,6 +444,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_AssetsPPU
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_CropFrameX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
+        type: 3}
+      propertyPath: m_CropFrameY
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6661558910344918264, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -528,26 +552,6 @@ PrefabInstance:
     - target: {fileID: 6661558910344918267, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
         type: 3}
       propertyPath: m_AllowDynamicResolution
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
-        type: 3}
-      propertyPath: m_AssetsPPU
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
-        type: 3}
-      propertyPath: m_CropFrameX
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6661558910344918149, guid: 3d2dddde707b6c143a5b1bd5890d4a23,
-        type: 3}
-      propertyPath: m_CropFrameY
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
